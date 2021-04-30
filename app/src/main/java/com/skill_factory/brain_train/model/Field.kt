@@ -7,8 +7,9 @@ const val PAINTED = 1
 const val WRONG = -1
 
 class Field(lvl: Int) {
-    val size = 3 + (lvl * 0.33).toInt()
-    val shaded = (size * size / 2 - lvl)
+    private val rSize = 3 + (lvl * 0.33)
+    val size = rSize.toInt()
+    val shaded = (rSize * rSize / 2 - lvl).toInt()
 
     val model = Array(size) { Array(size) { EMPTY } }
     val temp = Array(size) { Array(size) { EMPTY } }
