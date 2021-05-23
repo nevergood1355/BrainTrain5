@@ -16,9 +16,14 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Находим кнопку
         val menu1: View = view.findViewById(R.id.menu1)
+        val menu2: View = view.findViewById(R.id.menu2)
         //Вешаем обработчик событий
         menu1.setOnClickListener {
             requireFragmentManager().beginTransaction().replace(R.id.root, GameFragment()).addToBackStack(null).commit()
+        }
+
+        menu2.setOnClickListener {
+            requireFragmentManager().beginTransaction().replace(R.id.root, TwistingFragment()).commit()
         }
     }
 }

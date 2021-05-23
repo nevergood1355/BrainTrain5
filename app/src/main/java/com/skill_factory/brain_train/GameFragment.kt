@@ -11,9 +11,11 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.skill_factory.brain_train.model.Field
 import com.skill_factory.brain_train.views.FieldView
+import com.skill_factory.brain_train.views.HpBarView
 import kotlin.math.max
 import kotlin.math.min
 
+const val MAX_HP = 3
 const val MAX_LVL = 25
 const val START_LVL = 1
 
@@ -25,11 +27,18 @@ open class GameFragment : Fragment() {
             field = min(value, MAX_LVL)
             field = max(value, START_LVL);
             counterForNextLvL = 0
+            hp = MAX_HP
             text_lvl?.text = "Уровень ${field}"
         }
 
+    private var hpBarView: HpBarView? = null
+    private var hp = MAX_HP
+        set(value) {
+            field = value
+            hpBarView?.value = field
+        }
 
-    private lateinit var fieldView: FieldView
+    lateinit var fieldView: FieldView
     private val h = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
@@ -45,6 +54,7 @@ open class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Finding views by id
         fieldView = view.findViewById(R.id.field_view)
+        hpBarView = view.findViewById(R.id.hp_bar)
         text_lvl = view.findViewById(R.id.lvl)
         lvl = START_LVL
 
@@ -55,8 +65,11 @@ open class GameFragment : Fragment() {
         //Bind listener on wrong answer
         fieldView.onWrongAnswerListener = {
             //Backward for 2 levels
-            lvl -= 2
-            startLevel(lvl)
+            hp--
+            if (hp < 0) {
+                lvl -= 2
+                startLevel(lvl)
+            }
         }
 
         //Bind listener on right answer1
